@@ -10,12 +10,8 @@ function getCookie(cookieName) {
 async function jwtFetch(url, options = {}) {
     // Set options.method to 'GET' if there is no method.
     options.method = options.method || "GET";
-
-    if (options.method.toUpperCase() !== "GET") {
-        options.headers["Content-Type"] =
-          options.headers["Content-Type"] || "application/json";
-        options.headers["CSRF-Token"] = getCookie("CSRF-TOKEN");
-    }
+    // Set options.headers to an empty object if there is no headers.
+    options.headers = options.headers || {};
     // Set the "Authorization" header to the value of "jwtToken" in localStorage.
     // Remember to add 'Bearer ' to the front of the token.
     const jwtToken = localStorage.getItem("jwtToken");
@@ -26,6 +22,7 @@ async function jwtFetch(url, options = {}) {
     if (options.method.toUpperCase() !== "GET") {
       options.headers["Content-Type"] =
         options.headers["Content-Type"] || "application/json";
+      options.headers["CSRF-Token"] = getCookie("CSRF-TOKEN");
     }
   
     // Call fetch with the url and the updated options hash.
